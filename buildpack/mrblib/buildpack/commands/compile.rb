@@ -5,6 +5,7 @@ module Buildpack::Commands
     include Shell
 
     STATIC_JSON = "package.json"
+    STATIC_BUILDPACK = "https://github.com/Aculeus/heroku-buildpack-static#basic-auth"
 
     def self.detect(options)
       options["compile"]
@@ -21,7 +22,7 @@ module Buildpack::Commands
     def run
       buildpacks = %w(heroku/nodejs heroku/ember-cli-deploy)
       fastboot   = dependencies["ember-cli-fastboot"]
-      buildpacks << "heroku/static" unless fastboot
+      buildpacks << STATIC_BUILDPACK unless fastboot
 
       npm_config_production_file = "#{@env_dir}/NPM_CONFIG_PRODUCTION"
       if Dir.exist?(@env_dir) && !File.exist?(npm_config_production_file)
